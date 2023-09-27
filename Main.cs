@@ -8,17 +8,15 @@ public partial class Main : Node
 	
 	private int _score;
 
-	public override void _Ready()
-	{
-	}
-
 	public void GameOver()
 	{
-		GD.Print("On Player Hit");
 		GetNode<Timer>("MobTimer").Stop();
 		GetNode<Timer>("ScoreTimer").Stop();
 		
 		GetNode<Hud>("HUD").ShowGameOver();
+		
+		GetNode<AudioStreamPlayer>("Music").Stop();
+		GetNode<AudioStreamPlayer>("DeathSound").Play();
 	}
 
 	public void NewGame()
@@ -36,6 +34,8 @@ public partial class Main : Node
 		hud.ShowMessage("Get Ready!");
 		
 		GetTree().CallGroup("mobs", Node.MethodName.QueueFree);
+		
+		GetNode<AudioStreamPlayer>("Music").Play();
 	}
 	
 	private void OnMobTimerTimeout()

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class player : Area2D
+public partial class Player : Area2D
 {
 	[Signal]
 	public delegate void HitEventHandler();

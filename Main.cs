@@ -10,7 +10,6 @@ public partial class Main : Node
 
 	public override void _Ready()
 	{
-		NewGame();
 	}
 
 	public void GameOver()
@@ -18,6 +17,8 @@ public partial class Main : Node
 		GD.Print("On Player Hit");
 		GetNode<Timer>("MobTimer").Stop();
 		GetNode<Timer>("ScoreTimer").Stop();
+		
+		GetNode<Hud>("HUD").ShowGameOver();
 	}
 
 	public void NewGame()
@@ -29,6 +30,12 @@ public partial class Main : Node
 		player.Start(StartPosition.Position);
 		
 		GetNode<Timer>("StartTimer").Start();
+
+		var hud = GetNode<Hud>("HUD");
+		hud.UpdateScore(_score);
+		hud.ShowMessage("Get Ready!");
+		
+		GetTree().CallGroup("mobs", Node.MethodName.QueueFree);
 	}
 	
 	private void OnMobTimerTimeout()
@@ -59,5 +66,6 @@ public partial class Main : Node
 	private void OnScoreTimerTimeout()
 	{
 		_score++;
+		GetNode<Hud>("HUD").UpdateScore(_score);
 	}
 }
